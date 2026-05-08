@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap');
+
+* {
+    font-family: "Sniglet", system-ui;
+}
+/* fonts */
+.displayXL {
+    font-size: 30px;
+}
+.displayL {
+    font-size: 26px;
+}
+.displayM{
+    font-size: 20px;
+}
+.paragraphM{
+    font-size: 18px;
+}
+.paragraphS{
+    font-size: 16px;
+}
+.paragraphXS{
+    font-size: 12px;;
+}
+
+#main-header{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+#stats-number{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+}
+
+#input-form{
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+#pagesCount {
+    width: 64px;
+}
+
+#main-page {
+    display: flex;
+    justify-content: space-around;
+}
