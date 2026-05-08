@@ -9,18 +9,29 @@ const bookAuthor = document.getElementById('bookAuthor')
 const pagesCount = document.getElementById('pagesCount')
 const bookStatus = document.getElementById('bookStatus')
 
+const libraryBooksDiv = document.getElementById('total-books')
+
+const readBooksDiv = document.getElementById('read-books-cards')
+const currentReadDiv = document.getElementById('read-block')
+
 showFormBtn.addEventListener('click', () => {
     inputBookForm.style.display = 'flex';
 });
 saveBookBtn.addEventListener('click', () => {
+    if (titleBook.value.trim()===''){
+        alert('Please, input the title of the book!')
+        return
+    } 
     const newBook = {
-        title: titleBook.value,
-        author: bookAuthor.value,
+        id: Date.now(),
+        title: titleBook.value.trim(),
+        author: bookAuthor.value.trim() || 'Unknown',
         totalPages: pagesCount.value,
         status: bookStatus.value
     };
     books.push(newBook); 
     displayLibrary()
+    displayCurrentRead()
     clearInput()
     inputBookForm.style.display = 'none';
     console.log(`✅ "${newBook.title}" added to library!`);
@@ -35,7 +46,6 @@ function clearInput(){
     pagesCount.value = '';
 }
 // saving books in library
-const libraryBooksDiv = document.getElementById('total-books')
 function displayLibrary() {
     libraryBooksDiv.innerHTML = '';
     if (books.length === 0) {
@@ -72,31 +82,29 @@ function displayLibrary() {
             if (isConfirmed) {
                 books.splice(index, 1);
                 displayLibrary();
+                updateBookStats();
+                displayCurrentRead();
                 console.log(`Removed "${bookTitle}" from library`);
-            }
-            if (currentReadDiv) {
-                currentReadDiv.style.display = 'none';
             }
         });
     
     });
     const readStartBtn = document.querySelectorAll('.read-start-btn');
-    readStartBtn.forEach(button => {  // 👈 Add forEach here!
+    readStartBtn.forEach(button => { 
         button.addEventListener('click', () => {
             const index = parseInt(button.getAttribute('data-index'));
             const book = books[index];
-            if (currentReadDiv) {
-                currentReadDiv.style.display = 'flex';
-            }
             book.status = 'reading';
-            updateBookStats();
-            
+            displayCurrentRead();
+            displayLibrary()
             console.log(`Started reading: ${book.title}`);
         });
     });
     updateBookStats()
 }
 displayLibrary();
+displayCurrentRead();
+updateBookStats();
 
 // updating total count
 function updateBookStats() {
@@ -114,5 +122,23 @@ function updateBookStats() {
 }
 
 // updating currently reading
-const readBooksDiv = document.getElementById('read-books-cards')
-const currentReadDiv = document.getElementById('read-block')
+function displayCurrentRead() {
+    const readingBooks = books.filter(book => book.status === 'reading');
+    if (!readingBooks) return;
+    readBooksDiv.innerHTML = '';
+    if (readingBooks.length===0){
+        currentReadDiv.style.display= 'none';
+        console.log('no current reading books')
+    }
+    if (readingBooks!=0){
+        currentReadDiv.style.display='flex';
+    }
+    readingBooks.forEach((book, idx) => {
+        const readBookCard = document.createElement('div');
+        readBookCard.className = 'read-book-card';
+        readBookCard.innerHTML = `
+            <p>📖"${book.title}"</p>
+            <p>Author: ${book.author}</p>
+            <p>Total pages: ${book.totalPages}</p>`
+        readBooksDiv.appendChild(readBookCard);
+    })}
