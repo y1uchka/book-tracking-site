@@ -47,7 +47,9 @@ body {
 #heading .displayL {
     color: #360a0a7d;
 }
-
+#heading p {
+    text-align: center;
+}
 /* stats секция */
 #stats-number {
     display: flex;
@@ -347,4 +349,17 @@ small { color: #6c757d; }
 .error {
     border: 2px solid red;
     background-color: #ffeeee;
+}
+
+@media (max-width: 480px) {
+    #stats-number {
+        gap: 0.8rem;
+    }
+    #stats-number > div {
+        padding: 0.6rem 0.8rem;
+        min-width: 80px;
+    }
+    #stats-number div div {
+        font-size: 1.5rem;
+    }
 }
