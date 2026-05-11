@@ -16,8 +16,8 @@
     <main>
         <!-- currently reading -->
         <section id="progress-check">
-            <div id="read-block" style="display: none;">
-                <p class="displayM">Currently reading</p>
+            <div id="read-block">
+                <p class="displayM">Currently reading:</p>
                 <div id="read-books-cards"></div>
             </div>
         </section>
@@ -28,55 +28,84 @@
                 <p class="paragraphM">Total Books</p>
             </div>
             <div>
-                <div id="plans-count">0</div>
-                <p class="paragraphM">in Plans</p>
+                <div id="progress-count">0</div>
+                <p class="paragraphM">in Progress</p>
             </div>
             <div>
                 <div id="complete-count">0</div>
                 <p class="paragraphM">Completed</p>
             </div>
+            <div>
+                <div id="plans-count">0</div>
+                <p class="paragraphM">in Plans</p>
+            </div>
         </section>
         <!-- library with all books
         add filter on all/read/finished -->
         <section id="main-page">
-            <div id="inputBook">
-                <button id="showFormBtn">Add new book</button>
-                <div id="input-form" style="display: none;">
-                    <div class="column">
-                        <label for="bookTitle" class="paragraphXS">Book Title</label>
-                        <input type="text" id="titleBook" placeholder="Enter book title">
-                    </div>
-                    <div class="column">
-                        <label for="bookAuthor" class="paragraphXS">Author</label>
-                        <input type="text" id="bookAuthor" placeholder="Enter author name">
-                    </div>
-                    <div class="column">
-                        <label for="pagesCount" class="paragraphXS">Total pages</label>
-                        <input type="number" id="pagesCount" step="1" min="0" onkeydown="return false">
-                    </div>
-                    <div class="row">
-                        <label for="bookStatus" class="paragraphXS">Status</label>
+            <div id="library">
+                <p class="displayL">My library</p>
+                <div id="input-block">
+                    <button id="showFormBtn">Add new book</button>
+                    <div id="input-form" style="display: none;">
+                        <label for="bookTitle">Book Title</label>
+                        <input type="text" id="titleBook" placeholder="Enter book title" onkeydown="
+                        checkIfInputRight()">
+                        <label for="bookAuthor">Author</label>
+                        <input type="text" id="bookAuthor" placeholder="Enter author name" onkeydown="
+                        checkIfInputRight()">
+                        <label for="pagesCount">Total pages</label>
+                        <input type="number" id="pagesCount" step="1" min="0" placeholder="Enter total pages" onkeydown="
+                        checkIfInputRight()">
+                        <label for="bookStatus">Status</label>
                         <select id="bookStatus">
                             <option value="plans">in Plans</option>
+                            <option value="reading">Currently Reading</option>
                             <option value="completed">Completed</option>
                         </select>
-                    </div>
-                    <div class="row">
-                        <button id="saveBookBtn">Add book</button>
-                        <button id="cancelAddBook">Cancel</button>
+                        <div class="row">
+                            <button id="saveBookBtn">Add book</button>
+                            <button id="cancelAddBook">Cancel</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="library-total">
-                
-                <p>My library</p>
+                <!-- ДОБАВЛЕНО: фильтры для библиотеки -->
+                <div class="filter-bar">
+                    <button data-filter="all" class="filter-btn active">All books</button>
+                    <button data-filter="plans" class="filter-btn">📌 In Plans</button>
+                    <button data-filter="completed" class="filter-btn">✅ Completed</button>
+                </div>
                 <div id="total-books"></div>
             </div>
-        </section>
+        </section>      
         <!-- statistics -->
         <section>
         </section>
     </main>
+    <!-- modal window for rating the completed book -->
+    <div id="ratingModal" class="modal-overlay-rating" style="display: none;">
+        <div class="rating-modal-content">
+            <p class="displayM"`>🎉You finished reading:</p>
+            <p id="finishedBookTitle" class="paragraphM"></p>
+            <label>⭐ Your rating (1–5):</label>
+            <div class="star-rating" id="starRatingWidget">
+                <span data-rating="1">★</span><span data-rating="2">★</span><span data-rating="3">★</span><span data-rating="4">★</span><span data-rating="5">★</span>
+            </div>
+            <label>💬 Your review:</label>
+            <textarea id="book-review" rows="3" placeholder="What did you think about this book?"></textarea>
+            <button id="submit-rating-btn">Submit</button>
+        </div>
+    </div>
+    <!-- modal window for reading your review-->
+    <div id="reviewModal" class="modal-overlay-review" style="display: none;">
+        <div class="review-modal-content">
+            <p class="displayM">📝 Book review</p>
+            <p id="reviewFullText" style="margin: 12px 0; line-height:1.4;"></p>
+            <hr>
+            <button id="closeReviewBtn" class="close-review">Close</button>
+            <button id="editReviewBtn" class="close-review">Edit review</button>
+        </div>
+    </div>
     <script src="data.js"></script>
     <script src="app.js"></script>
 </body>
