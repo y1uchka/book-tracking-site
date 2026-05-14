@@ -132,6 +132,8 @@ function updateBookLibrary(){
         let reviewBtnHtml = '';
         if (book.status === 'completed' && book.review && book.review.trim() !== '') {
             reviewBtnHtml = `<div><button class="review-btn" data-id="${book.id}">📖 View review</button></div>`;
+        } else if (book.status === 'completed' && book.review===''){
+            reviewBtnHtml = `<div><button class="add-review-btn" data-id="${book.id}">📖 Add review</button></div>`;
         }
         bookCard.innerHTML = `
             <p style="font-size:19px;">${statusEmoji} ${book.title}</p>
@@ -152,6 +154,7 @@ function updateBookLibrary(){
     const readStartBtn = document.querySelectorAll('.read-start-btn')
     const completeBookBtn = document.querySelectorAll('.complete-btn')
     const viewReview = document.querySelectorAll('.review-btn')
+    const addReviewBtn = document.querySelectorAll('.add-review-btn')
     // removing book
     removeBookBtn.forEach(button => {
        button.addEventListener('click', () => {
@@ -207,6 +210,17 @@ function updateBookLibrary(){
             }
         })
     })
+    addReviewBtn.forEach(button => {
+        button.addEventListener('click', () => {
+            const bookId = parseInt(button.getAttribute('data-id'));
+            const currentBook = books.find(b => b.id === bookId);
+            if (currentBook){
+                ratingCurrentBook = currentBook;
+                document.getElementById('finishedBookTitle').textContent = `${currentBook.title} by ${currentBook.author}`;
+                ratingModalWindow.style.display = 'flex';
+            }
+        })
+    })
 }
 // currently reading books
 function updateCurrentlyReading(){
@@ -225,7 +239,7 @@ function updateCurrentlyReading(){
         const progressPercentage = (readPages/book.pages)*100;
         progressBookCard.innerHTML = `
             <p style="font-size:19px;">📖"${book.title}"</p>
-            <p>✍️ Author: ${book.author}</p>
+            <p>✍️ by ${book.author}</p>
             <p>📄 Total pages: ${book.pages}</p>
             <div class="progress-container">
                 <input type="range" min="0" max="${book.pages}" value="${readPages}" 
@@ -263,7 +277,7 @@ function updateCurrentlyReading(){
             button.addEventListener('click', () => {
                 const bookId = parseInt(button.getAttribute('data-id'));
                 const currentBook = books.find(b => b.id === bookId);
-                const confirmRemoval = confirm(`Are you sure you want to remove "${book.title}"?`)
+                const confirmRemoval = confirm(`Return "${book.title}" back to plans?`)
                 if (confirmRemoval){
                     book.status = 'plans'
                     booksInProgress = books.filter(b => b.id !== bookId);
@@ -322,6 +336,9 @@ editReviewBtn.addEventListener('click', () => {
     ratingModalWindow.style.display = 'flex';
 })
 
+// goals setupping
+
+
 // working filters
 function setupFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -339,11 +356,11 @@ function setupFilters() {
 function init() {
     if (books.length === 0) {
         books = [
-            { id: 101, title: "Martin Eden", author: "Jack London", pages: 456, status: "completed" },
-            { id: 102, title: "Wuthering Heights", author: "Emily Bronte", pages: 298, status: "plans" },
-            { id: 103, title: "Misery", author: "Stephen King", pages: 321, status: "reading" },
+            { id: 101, title: "Martin Eden", author: "Jack London", pages: 456, status: "completed", readPages: 456, review: "Excellent!", rating: 5 },
+            { id: 102, title: "Wuthering Heights", author: "Emily Bronte", pages: 298, status: "plans", readPages: null, review: "", rating: 0 },
+            { id: 103, title: "Misery", author: "Stephen King", pages: 321, status: "reading", readPages: 150, review: "", rating: 0 },
         ];
-        console.log("Demo books loaded!");
+        console.log("📚 Demo books loaded!");
     }
     updateBookNumber()
     updateBookLibrary()

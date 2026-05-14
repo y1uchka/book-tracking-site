@@ -64,7 +64,7 @@ body {
     border-radius: 1.5rem;
     padding: 1.2rem 2rem;
     text-align: center;
-    min-width: 130px;
+    width: 160px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     border: 2px solid #d02f5a;
 }
@@ -142,6 +142,13 @@ body {
     font-size: 1.6rem;
     margin-bottom: 1.2rem;
     color: #0f172a;
+}
+
+.header-Library{
+   display: flex;
+   justify-content: center;
+   padding-bottom: 16px;
+   border-bottom: 2px solid rgb(245, 224, 224);
 }
 
 #showFormBtn {
@@ -237,14 +244,7 @@ button {
 }
 .rating-stars span { color: #fbbf24; }
 .rating-stars .empty { color: #d1d5db; }
-.review-btn {
-    background: #e0e7ff;
-    font-size: 0.7rem;
-    padding: 4px 10px;
-    margin-top: 6px;
-    cursor: pointer;
-}
-.remove-btn, .read-start-btn, .complete-btn, .back-to-plans{
+.remove-btn, .read-start-btn, .complete-btn, .back-to-plans, .add-review-btn, .review-btn{
     margin-top: 6px;
     margin-right: 5px;
     font-size: 0.7rem;
@@ -253,6 +253,7 @@ button {
 .read-start-btn { background: #dbeafe; color: #2563eb; }
 .complete-btn { background: #dab7f0; color: #520b5f; }
 .back-to-plans { background: #d5c9dc; color: rgb(32, 9, 59);}
+.add-review-btn, .review-btn { background: #faf3ff; color: rgb(32, 9, 59); }
 /* затемнённое модальное окно для оценки книги */
 .modal-overlay-rating {
     position: fixed;
@@ -353,13 +354,17 @@ small { color: #6c757d; }
 
 @media (max-width: 480px) {
     #stats-number {
-        gap: 0.8rem;
+        gap: 1.7rem;
+        text-align: center;
     }
     #stats-number > div {
-        padding: 0.6rem 0.8rem;
-        min-width: 80px;
+        padding: 1rem ;
+        width: 120px;
     }
     #stats-number div div {
         font-size: 1.5rem;
+    }
+    #stats-number div p {
+        font-size: 16px;
     }
 }
