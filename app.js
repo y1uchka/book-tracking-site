@@ -57,6 +57,7 @@ saveBookBtn.addEventListener('click', ()=>{
     updateBookLibrary()
     updateCurrentlyReading();
     clearInputForm();
+    saveBooksToLocalStorage()
     inputBookForm.style.display = 'none';
 })
 
@@ -166,6 +167,7 @@ function updateBookLibrary(){
                 updateBookLibrary();
                 updateBookNumber();
                 updateCurrentlyReading()
+                saveBooksToLocalStorage()
                 console.log(`Removed ${currentBook.title}.`)
             }
        }) 
@@ -180,7 +182,8 @@ function updateBookLibrary(){
                 currentBook.readPages = 0;
                 updateBookLibrary();
                 updateBookNumber();
-                updateCurrentlyReading()
+                updateCurrentlyReading();
+                saveBooksToLocalStorage()
                 console.log(`Started reading ${currentBook.title}`)
             }
         })
@@ -195,6 +198,7 @@ function updateBookLibrary(){
                 updateBookLibrary();
                 updateBookNumber();
                 updateCurrentlyReading()
+                saveBooksToLocalStorage()
                 console.log(`Completed ${currentBook.title}`)
             }
         })
@@ -260,6 +264,7 @@ function updateCurrentlyReading(){
             const currentBook = books.find(b => b.id === bookId);
             if (currentBook){
                 currentBook.readPages = inputPages;
+                saveBooksToLocalStorage()
                 const statsDiv = progressBookCard.querySelector('.progress-stats');
                 statsDiv.innerHTML = `
                     <span>📖 ${inputPages} / ${book.pages} pages</span>
@@ -284,6 +289,7 @@ function updateCurrentlyReading(){
                     updateBookLibrary();
                     updateBookNumber();
                     updateCurrentlyReading()
+                    saveBooksToLocalStorage()
                     console.log(`Removed ${book.title}.`)
                 }
             })
@@ -325,6 +331,7 @@ submitRatingBtn.addEventListener('click', () => {
     updateBookLibrary();
     updateBookNumber();
     updateCurrentlyReading();
+    saveBooksToLocalStorage();
 })
 
 closeReviewBtn.addEventListener('click', () => {
@@ -336,8 +343,18 @@ editReviewBtn.addEventListener('click', () => {
     ratingModalWindow.style.display = 'flex';
 })
 
-// goals setupping
+// local storage
+function saveBooksToLocalStorage() {
+    localStorage.setItem('books', JSON.stringify(books));
+}
 
+function loadBooksFromLocalStorage() {
+    const savedBooks = localStorage.getItem('books');
+    if (savedBooks) {
+        return JSON.parse(savedBooks);
+    }
+    return null;
+}
 
 // working filters
 function setupFilters() {
@@ -354,17 +371,26 @@ function setupFilters() {
 
 // ========== initiating ==========
 function init() {
-    if (books.length === 0) {
+    // Try to load books from localStorage first
+    const savedBooks = loadBooksFromLocalStorage();
+    
+    if (savedBooks && savedBooks.length > 0) {
+        books = savedBooks;
+        console.log("📚 Books loaded from localStorage!");
+    } else {
+        // Only load demo books if localStorage is empty
         books = [
             { id: 101, title: "Martin Eden", author: "Jack London", pages: 456, status: "completed", readPages: 456, review: "Excellent!", rating: 5 },
             { id: 102, title: "Wuthering Heights", author: "Emily Bronte", pages: 298, status: "plans", readPages: null, review: "", rating: 0 },
             { id: 103, title: "Misery", author: "Stephen King", pages: 321, status: "reading", readPages: 150, review: "", rating: 0 },
         ];
         console.log("📚 Demo books loaded!");
+        saveBooksToLocalStorage(); // Save the demo books
     }
-    updateBookNumber()
-    updateBookLibrary()
-    setupFilters()
-    updateCurrentlyReading()
+    
+    updateBookNumber();
+    updateBookLibrary();
+    setupFilters();
+    updateCurrentlyReading();
 }
-init();
+init()
